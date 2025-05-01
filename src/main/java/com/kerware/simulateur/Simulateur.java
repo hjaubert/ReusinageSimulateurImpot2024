@@ -8,15 +8,6 @@ package com.kerware.simulateur;
 public class Simulateur {
 
     /**
-     * Constantes pour la contribution exceptionnelle sur les hauts revenus.
-     */
-    private static final int LIMITE_CEHR_0 = 0;
-    private static final int LIMITE_CEHR_1 = 250000;
-    private static final int LIMITE_CEHR_2 = 500000;
-    private static final int LIMITE_CEHR_3 = 1000000;
-    private static final int LIMITE_CEHR_4 = Integer.MAX_VALUE;
-
-    /**
      * Taux CEHR pour les célibataires.
      */
     private static final double TAUX_CEHR_CELIBATAIRE_0 = 0.0;
@@ -72,31 +63,6 @@ public class Simulateur {
     private double impotFoyer;
     private double impotAvantDecote;
     private double contributionExceptionnelle;
-
-    /**
-     * Tableau des limites de tranches d'imposition.
-     */
-    private final int[] limitesTranches = {
-            TrancheImposition.LIMITE_T0.getLimite(), TrancheImposition.LIMITE_T1.getLimite(), TrancheImposition.LIMITE_T2.getLimite(), TrancheImposition.LIMITE_T3.getLimite(), TrancheImposition.LIMITE_T4.getLimite(), TrancheImposition.LIMITE_T5.getLimite()
-    };
-
-    /**
-     * Tableau des taux d'imposition par tranche.
-     */
-    private final double[] tauxTranches = {
-            TrancheImposition.LIMITE_T0.getTaux(),
-            TrancheImposition.LIMITE_T1.getTaux(),
-            TrancheImposition.LIMITE_T2.getTaux(),
-            TrancheImposition.LIMITE_T3.getTaux(),
-            TrancheImposition.LIMITE_T4.getTaux()
-    };
-
-    /**
-     * Tableau des limites pour la contribution exceptionnelle.
-     */
-    private final int[] limitesCEHR = {
-            LIMITE_CEHR_0, LIMITE_CEHR_1, LIMITE_CEHR_2, LIMITE_CEHR_3, LIMITE_CEHR_4
-    };
 
     /**
      * Tableau des taux CEHR pour les célibataires.
@@ -340,14 +306,14 @@ public class Simulateur {
             double[] tauxCEHR = (nombrePartsDeclarants == 1)
                     ? tauxCEHRCelibataire : tauxCEHRCouple;
 
-            if (revenuFiscalReference >= limitesCEHR[i]
-                    && revenuFiscalReference < limitesCEHR[i + 1]
+            if (revenuFiscalReference >= LimiteCEHR.values()[i].getLimite()
+                    && revenuFiscalReference < LimiteCEHR.values()[i+1].getLimite()
             ) {
                 contributionExceptionnelle +=
-                        (revenuFiscalReference - limitesCEHR[i]) * tauxCEHR[i];
+                        (revenuFiscalReference - LimiteCEHR.values()[i].getLimite()) * tauxCEHR[i];
                 break;
             } else {
-                contributionExceptionnelle += (limitesCEHR[i + 1] - limitesCEHR[i]) * tauxCEHR[i];
+                contributionExceptionnelle += (LimiteCEHR.values()[i+1].getLimite() - LimiteCEHR.values()[i].getLimite()) * tauxCEHR[i];
             }
             i++;
         } while (i < tauxCEHRCelibataire.length);
