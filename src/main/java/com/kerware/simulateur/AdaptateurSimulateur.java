@@ -128,36 +128,36 @@ public final class AdaptateurSimulateur implements ICalculateurImpot {
 
     @Override
     public double getContribExceptionnelle() {
-        return simulateur.getContribExceptionnelle();
+        return simulateur.getCalculFiscale().getContributionExceptionnelle();
     }
 
     @Override
     public int getRevenuFiscalReference() {
-        return (int) simulateur.getRevenuReference();
+        return (int) simulateur.getCalculFiscale().getRevenuFiscalReference();
     }
 
     @Override
     public int getAbattement() {
-        return (int) simulateur.getAbattement();
+        return (int) simulateur.getCalculFiscale().getAbattement();
     }
 
     @Override
     public double getNbPartsFoyerFiscal() {
-        return simulateur.getNbParts();
+        return simulateur.getCalculFiscale().getNombrePartsFoyer();
     }
 
     @Override
     public int getImpotAvantDecote() {
-        return (int) simulateur.getImpotAvantDecote();
+        return (int) simulateur.getCalculFiscale().getImpotAvantDecote();
     }
 
     @Override
     public int getDecote() {
-        return (int) simulateur.getDecote();
+        return (int) simulateur.getCalculFiscale().getDecote();
     }
 
     @Override
     public int getImpotSurRevenuNet() {
-        return (int) simulateur.getImpotNet();
+        return (int) simulateur.getCalculFiscale().getImpotNet();
     }
 }

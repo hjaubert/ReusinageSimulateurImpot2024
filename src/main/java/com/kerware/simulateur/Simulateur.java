@@ -7,55 +7,15 @@ package com.kerware.simulateur;
  */
 public class Simulateur {
 
-    /**
-     * Constantes pour le calcul des parts fiscales.
-     */
-    private static final double PART_ENFANT = 0.5;
-    private static final double PART_PARENT_ISOLE = 0.5;
-    private static final int NB_ENFANTS_DEMI_PART = 2;
-
     // Données du calcul
-    private int revenuNetDeclarant1;
-    private int revenuNetDeclarant2;
-    private int nombreEnfants;
-    private int nombreEnfantsHandicap;
-    private boolean parentIsole;
-    private double revenuFiscalReference;
-    private double abattement;
-    private double nombrePartsDeclarants;
-    private double nombrePartsFoyer;
-    private double decote;
-    private double impotDeclarants;
-    private double impotFoyer;
-    private double impotAvantDecote;
-    private double contributionExceptionnelle;
+    CalculFiscale calculFiscale;
 
     /**
      * Constructeur par défaut.
      */
     public Simulateur() {
         // Initialisation des attributs avec des valeurs par défaut
-        reinitialiser();
-    }
-
-    /**
-     * Réinitialise tous les attributs du simulateur.
-     */
-    private void reinitialiser() {
-        this.revenuNetDeclarant1 = 0;
-        this.revenuNetDeclarant2 = 0;
-        this.nombreEnfants = 0;
-        this.nombreEnfantsHandicap = 0;
-        this.parentIsole = false;
-        this.revenuFiscalReference = 0;
-        this.abattement = 0;
-        this.nombrePartsDeclarants = 0;
-        this.nombrePartsFoyer = 0;
-        this.decote = 0;
-        this.impotDeclarants = 0;
-        this.impotFoyer = 0;
-        this.impotAvantDecote = 0;
-        this.contributionExceptionnelle = 0;
+        calculFiscale = new CalculFiscale();
     }
 
     /**
@@ -77,280 +37,37 @@ public class Simulateur {
         PreconditionsValidator.verifierPreconditions(revNetDecl1, revNetDecl2, sitFam, nbEnfants, nbEnfantsHandicapes, parentIsol);
 
         // Initialisation des données
-        initialiserDonnees(revNetDecl1, revNetDecl2, nbEnfants, nbEnfantsHandicapes, parentIsol);
+        calculFiscale.initialiserDonnees(revNetDecl1, revNetDecl2, nbEnfants, nbEnfantsHandicapes, parentIsol);
 
         // Calcul de l'abattement
-        calculerAbattement(sitFam);
+        calculFiscale.calculerAbattement(sitFam);
 
         // Calcul du revenu fiscal de référence
-        calculerRevenuFiscalReference();
+        calculFiscale.calculerRevenuFiscalReference();
 
         // Calcul du nombre de parts
-        calculerNombreParts(sitFam);
+        calculFiscale.calculerNombreParts(sitFam);
 
         // Calcul de la contribution exceptionnelle
-        calculerContributionExceptionnelle();
+        calculFiscale.calculerContributionExceptionnelle();
 
         // Calcul de l'impôt des déclarants
-        calculerImpotDeclarants();
+        calculFiscale.calculerImpotDeclarants();
 
         // Calcul de l'impôt du foyer fiscal
-        calculerImpotFoyer();
+        calculFiscale.calculerImpotFoyer();
 
         // Vérification du plafonnement
-        appliquerPlafonnement();
+        calculFiscale.appliquerPlafonnement();
 
         // Calcul de la décote
-        calculerDecote();
+        calculFiscale.calculerDecote();
 
         // Calcul de l'impôt final
-        return calculerImpotFinal();
+        return calculFiscale.calculerImpotFinal();
     }
 
-    /**
-     * Initialise les données pour le calcul.
-     */
-    private void initialiserDonnees(int revNetDecl1, int revNetDecl2, int nbEnfants,
-                                    int nbEnfantsHandicapes, boolean parentIsol) {
-        this.revenuNetDeclarant1 = revNetDecl1;
-        this.revenuNetDeclarant2 = revNetDecl2;
-        this.nombreEnfants = nbEnfants;
-        this.nombreEnfantsHandicap = nbEnfantsHandicapes;
-        this.parentIsole = parentIsol;
-    }
-
-    /**
-     * Calcule l'abattement à appliquer.
-     * EXG_IMPOT_02
-     */
-    private void calculerAbattement(SituationFamiliale sitFam) {
-        this.abattement = AbattementCalculator.calculer(revenuNetDeclarant1, revenuNetDeclarant2, sitFam);
-    }
-
-    /**
-     * Calcule le revenu fiscal de référence.
-     */
-    private void calculerRevenuFiscalReference() {
-        this.revenuFiscalReference = revenuNetDeclarant1 + revenuNetDeclarant2 - abattement;
-        if (this.revenuFiscalReference < 0) {
-            this.revenuFiscalReference = 0;
-        }
-    }
-
-    /**
-     * Calcule le nombre de parts du foyer fiscal.
-     * EXG_IMPOT_03
-     */
-    private void calculerNombreParts(SituationFamiliale sitFam) {
-        // Calcul des parts pour les déclarants
-        this.nombrePartsDeclarants = sitFam.getNombrePartsDeclarants();
-
-        // Calcul des parts pour les enfants à charge
-        this.nombrePartsFoyer = this.nombrePartsDeclarants;
-
-        if (nombreEnfants <= NB_ENFANTS_DEMI_PART) {
-            this.nombrePartsFoyer += nombreEnfants * PART_ENFANT;
-        } else {
-            this.nombrePartsFoyer += 1.0 + (nombreEnfants - NB_ENFANTS_DEMI_PART);
-        }
-
-        // Ajout pour parent isolé
-        if (parentIsole && nombreEnfants > 0) {
-            this.nombrePartsFoyer += PART_PARENT_ISOLE;
-        }
-
-        // Cas spécial pour veuf avec enfant
-        if (sitFam == SituationFamiliale.VEUF && nombreEnfants > 0) {
-            this.nombrePartsFoyer += 1;
-        }
-
-        // Ajout pour enfants en situation de handicap
-        this.nombrePartsFoyer += nombreEnfantsHandicap * PART_ENFANT;
-    }
-
-    /**
-     * Calcule la contribution exceptionnelle sur les hauts revenus.
-     * EXG_IMPOT_07
-     */
-    private void calculerContributionExceptionnelle() {
-        this.contributionExceptionnelle = 0;
-
-        LimiteCEHR[] limites = LimiteCEHR.values();
-        TauxCEHR[] taux = TauxCEHR.values();
-
-        for (int i = 0; i < taux.length; i++) {
-            int borneInf = limites[i].getLimite();
-            int borneSup = limites[i + 1].getLimite();
-
-            if (revenuFiscalReference > borneInf) {
-                double montantTranche = Math.min(revenuFiscalReference, borneSup) - borneInf;
-                double tauxApplicable;
-                if (nombrePartsDeclarants == 1) {
-                    tauxApplicable = taux[i].getTauxCelibataire();
-                } else {
-                    tauxApplicable = taux[i].getTauxCouple();
-                }
-                this.contributionExceptionnelle += montantTranche * tauxApplicable;
-            }
-        }
-
-        this.contributionExceptionnelle = Math.round(this.contributionExceptionnelle);
-    }
-
-
-    /**
-     * Calcule l'impôt brut des déclarants.
-     * EXG_IMPOT_04
-     */
-    private void calculerImpotDeclarants() {
-        double revenuImposable = revenuFiscalReference / nombrePartsDeclarants;
-        this.impotDeclarants = calculerImpotParTranches(revenuImposable) * nombrePartsDeclarants;
-        this.impotDeclarants = Math.round(this.impotDeclarants);
-    }
-
-    /**
-     * Calcule l'impôt brut du foyer fiscal.
-     * EXG_IMPOT_04
-     */
-    private void calculerImpotFoyer() {
-        double revenuImposable = revenuFiscalReference / nombrePartsFoyer;
-        this.impotFoyer = calculerImpotParTranches(revenuImposable) * nombrePartsFoyer;
-        this.impotFoyer = Math.round(this.impotFoyer);
-    }
-
-    /**
-     * Calcule l'impôt pour un revenu donné selon les tranches d'imposition.
-     */
-    private double calculerImpotParTranches(double revenuImposable) {
-        return TrancheImposition.calculerImpot(revenuImposable);
-    }
-
-    /**
-     * Applique le plafonnement des effets du quotient familial.
-     * EXG_IMPOT_05
-     */
-    private void appliquerPlafonnement() {
-        double baisseImpot = impotDeclarants - impotFoyer;
-        double ecartParts = nombrePartsFoyer - nombrePartsDeclarants;
-        double plafond = (ecartParts / PART_ENFANT) * PlafonnementDecote.PLAFOND_DEMI_PART;
-
-        if (baisseImpot >= plafond) {
-            this.impotFoyer = impotDeclarants - plafond;
-        }
-
-        this.impotAvantDecote = this.impotFoyer;
-    }
-
-    /**
-     * Calcule la décote.
-     * EXG_IMPOT_06
-     */
-    private void calculerDecote() {
-        this.decote = 0;
-
-        if (nombrePartsDeclarants == 1) {
-            if (impotFoyer < PlafonnementDecote.SEUIL_DECOTE_SEUL) {
-                this.decote = PlafonnementDecote.DECOTE_MAX_SEUL - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
-            }
-        } else if (nombrePartsDeclarants == 2) {
-            if (impotFoyer < PlafonnementDecote.SEUIL_DECOTE_COUPLE) {
-                this.decote = PlafonnementDecote.DECOTE_MAX_COUPLE - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
-            }
-        }
-
-        this.decote = Math.round(this.decote);
-
-        if (impotFoyer <= this.decote) {
-            this.decote = impotFoyer;
-        }
-    }
-
-    /**
-     * Calcule l'impôt final.
-     */
-    private int calculerImpotFinal() {
-        double impotFinal = impotFoyer - decote + contributionExceptionnelle;
-        return (int) Math.round(impotFinal);
-    }
-
-    /**
-     * Retourne le revenu fiscal de référence.
-     *
-     * @return Revenu fiscal de référence
-     */
-    public double getRevenuReference() {
-        return revenuFiscalReference;
-    }
-
-    /**
-     * Retourne la décote calculée.
-     *
-     * @return Décote
-     */
-    public double getDecote() {
-        return decote;
-    }
-
-    /**
-     * Retourne l'abattement appliqué.
-     *
-     * @return Abattement
-     */
-    public double getAbattement() {
-        return abattement;
-    }
-
-    /**
-     * Retourne le nombre de parts du foyer fiscal.
-     *
-     * @return Nombre de parts
-     */
-    public double getNbParts() {
-        return nombrePartsFoyer;
-    }
-
-    /**
-     * Retourne l'impôt avant décote.
-     *
-     * @return Impôt avant décote
-     */
-    public double getImpotAvantDecote() {
-        return impotAvantDecote;
-    }
-
-    /**
-     * Retourne l'impôt net final.
-     *
-     * @return Impôt net final
-     */
-    public double getImpotNet() {
-        return impotFoyer - decote + contributionExceptionnelle;
-    }
-
-    /**
-     * Retourne le revenu net du premier déclarant.
-     *
-     * @return Revenu net du premier déclarant
-     */
-    public int getRevenuNetDeclatant1() {
-        return revenuNetDeclarant1;
-    }
-
-    /**
-     * Retourne le revenu net du deuxième déclarant.
-     *
-     * @return Revenu net du deuxième déclarant
-     */
-    public int getRevenuNetDeclatant2() {
-        return revenuNetDeclarant2;
-    }
-
-    /**
-     * Retourne la contribution exceptionnelle sur les hauts revenus.
-     *
-     * @return Contribution exceptionnelle
-     */
-    public double getContribExceptionnelle() {
-        return contributionExceptionnelle;
+    public CalculFiscale getCalculFiscale() {
+        return calculFiscale;
     }
 }
