@@ -10,8 +10,8 @@ public enum SituationFamiliale {
     private final int nombrePartsDeclarants;
 
     // Constructeur pour l'énumération
-    SituationFamiliale(int nombrePartsDeclarants) {
-        this.nombrePartsDeclarants = nombrePartsDeclarants;
+    SituationFamiliale(int newNombrePartsDeclarants) {
+        this.nombrePartsDeclarants = newNombrePartsDeclarants;
     }
 
     // Méthode pour récupérer le nombre de parts

@@ -11,9 +11,9 @@ public enum TrancheImposition {
     private final int limite;
     private final double taux;
 
-    TrancheImposition(int limite, double taux) {
-        this.limite = limite;
-        this.taux = taux;
+    TrancheImposition(int newLimite, double newTaux) {
+        this.limite = newLimite;
+        this.taux = newTaux;
     }
 
     public int getLimite() {
@@ -29,11 +29,13 @@ public enum TrancheImposition {
         int i = 0;
 
         do {
-            if (revenuImposable >= values()[i].getLimite() && revenuImposable < values()[i+1].getLimite()) {
+            if (revenuImposable >= values()[i].getLimite()
+                    && revenuImposable < values()[i+1].getLimite()) {
                 impot += (revenuImposable - values()[i].getLimite()) * values()[i].getTaux();
                 break;
             } else {
-                impot += (values()[i+1].getLimite() - values()[i].getLimite()) * values()[i].getTaux();
+                impot += (values()[i+1].getLimite() - values()[i].getLimite())
+                        * values()[i].getTaux();
             }
             i++;
         } while (i < values().length);

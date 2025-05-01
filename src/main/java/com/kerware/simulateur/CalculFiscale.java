@@ -21,31 +21,57 @@ public class CalculFiscale {
         reinitialiser();
     }
 
+    /**
+     *
+     * @return le revenu fiscale de référence
+     */
     public double getRevenuFiscalReference() {
         return revenuFiscalReference;
     }
 
+    /**
+     *
+     * @return l'abattement
+     */
     public double getAbattement() {
         return abattement;
     }
 
+    /**
+     *
+     * @return le nombre de parts du foyer
+     */
     public double getNombrePartsFoyer() {
         return nombrePartsFoyer;
     }
 
+    /**
+     *
+     * @return la decote
+     */
     public double getDecote() {
         return decote;
     }
 
-
+    /**
+     *
+     * @return l'impot avant la decote
+     */
     public double getImpotAvantDecote() {
         return impotAvantDecote;
     }
 
+    /**
+     *
+     * @return la valeur de la contribution exceptionnelle
+     */
     public double getContributionExceptionnelle() {
         return contributionExceptionnelle;
     }
 
+    /**
+     * Reinitialise toutes les variables
+     */
     private void reinitialiser() {
         this.revenuNetDeclarant1 = 0;
         this.revenuNetDeclarant2 = 0;
@@ -63,6 +89,14 @@ public class CalculFiscale {
         this.contributionExceptionnelle = 0;
     }
 
+    /**
+     *
+     * @param revNetDecl1
+     * @param revNetDecl2
+     * @param nbEnfants
+     * @param nbEnfantsHandicapes
+     * @param parentIsol
+     */
     public void initialiserDonnees(int revNetDecl1, int revNetDecl2, int nbEnfants,
                                     int nbEnfantsHandicapes, boolean parentIsol) {
         this.revenuNetDeclarant1 = revNetDecl1;
@@ -77,7 +111,9 @@ public class CalculFiscale {
      * EXG_IMPOT_02
      */
     public void calculerAbattement(SituationFamiliale sitFam) {
-        this.abattement = AbattementCalculator.calculer(revenuNetDeclarant1, revenuNetDeclarant2, sitFam);
+        this.abattement = AbattementCalculator.calculer(
+                revenuNetDeclarant1, revenuNetDeclarant2, sitFam
+        );
     }
 
     /**
@@ -104,7 +140,9 @@ public class CalculFiscale {
         if (nombreEnfants <= ConstantesFiscales.NB_ENFANTS_DEMI_PART ) {
             this.nombrePartsFoyer += nombreEnfants * ConstantesFiscales.PART_ENFANT;
         } else {
-            this.nombrePartsFoyer += 1.0 + (nombreEnfants - ConstantesFiscales.NB_ENFANTS_DEMI_PART);
+            this.nombrePartsFoyer += 1.0 + (
+                    nombreEnfants - ConstantesFiscales.NB_ENFANTS_DEMI_PART
+            );
         }
 
         // Ajout pour parent isolé
@@ -185,7 +223,8 @@ public class CalculFiscale {
     public void appliquerPlafonnement() {
         double baisseImpot = impotDeclarants - impotFoyer;
         double ecartParts = nombrePartsFoyer - nombrePartsDeclarants;
-        double plafond = (ecartParts / ConstantesFiscales.PART_ENFANT) * PlafonnementDecote.PLAFOND_DEMI_PART;
+        double plafond = (ecartParts / ConstantesFiscales.PART_ENFANT)
+                * PlafonnementDecote.PLAFOND_DEMI_PART;
 
         if (baisseImpot >= plafond) {
             this.impotFoyer = impotDeclarants - plafond;
@@ -203,11 +242,13 @@ public class CalculFiscale {
 
         if (nombrePartsDeclarants == 1) {
             if (impotFoyer < PlafonnementDecote.SEUIL_DECOTE_SEUL) {
-                this.decote = PlafonnementDecote.DECOTE_MAX_SEUL - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
+                this.decote = PlafonnementDecote.DECOTE_MAX_SEUL
+                        - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
             }
         } else if (nombrePartsDeclarants == 2) {
             if (impotFoyer < PlafonnementDecote.SEUIL_DECOTE_COUPLE) {
-                this.decote = PlafonnementDecote.DECOTE_MAX_COUPLE - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
+                this.decote = PlafonnementDecote.DECOTE_MAX_COUPLE
+                        - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
             }
         }
 

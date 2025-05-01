@@ -8,7 +8,7 @@ package com.kerware.simulateur;
 public class Simulateur {
 
     // Données du calcul
-    CalculFiscale calculFiscale;
+    private CalculFiscale calculFiscale;
 
     /**
      * Constructeur par défaut.
@@ -34,10 +34,12 @@ public class Simulateur {
                            int nbEnfants, int nbEnfantsHandicapes, boolean parentIsol) {
 
         // Vérification des préconditions
-        PreconditionsValidator.verifierPreconditions(revNetDecl1, revNetDecl2, sitFam, nbEnfants, nbEnfantsHandicapes, parentIsol);
+        PreconditionsValidator.verifierPreconditions(revNetDecl1, revNetDecl2, sitFam,
+                nbEnfants, nbEnfantsHandicapes, parentIsol);
 
         // Initialisation des données
-        calculFiscale.initialiserDonnees(revNetDecl1, revNetDecl2, nbEnfants, nbEnfantsHandicapes, parentIsol);
+        calculFiscale.initialiserDonnees(revNetDecl1, revNetDecl2, nbEnfants,
+                                        nbEnfantsHandicapes, parentIsol);
 
         // Calcul de l'abattement
         calculFiscale.calculerAbattement(sitFam);
@@ -67,7 +69,19 @@ public class Simulateur {
         return calculFiscale.calculerImpotFinal();
     }
 
+    /**
+     *
+     * @return
+     */
     public CalculFiscale getCalculFiscale() {
         return calculFiscale;
+    }
+
+    /**
+     *
+     * @param newCalculFiscale
+     */
+    public void setCalculFiscale(CalculFiscale newCalculFiscale) {
+        this.calculFiscale = newCalculFiscale;
     }
 }

@@ -9,8 +9,8 @@ public enum LimiteCEHR {
 
     private final int limite;
 
-    LimiteCEHR(int limite) {
-        this.limite = limite;
+    LimiteCEHR(int newLimite) {
+        this.limite = newLimite;
     }
 
     public int getLimite() {

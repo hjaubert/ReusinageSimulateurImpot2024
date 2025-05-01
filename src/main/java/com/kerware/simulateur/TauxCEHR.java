@@ -9,9 +9,9 @@ public enum TauxCEHR {
     private final double tauxCelibataire;
     private final double tauxCouple;
 
-    TauxCEHR(double tauxCelibataire, double tauxCouple) {
-        this.tauxCelibataire = tauxCelibataire;
-        this.tauxCouple = tauxCouple;
+    TauxCEHR(double newTauxCelibataire, double newTauxCouple) {
+        this.tauxCelibataire = newTauxCelibataire;
+        this.tauxCouple = newTauxCouple;
     }
 
     public double getTauxCelibataire() {
