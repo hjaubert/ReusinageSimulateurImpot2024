@@ -8,29 +8,6 @@ package com.kerware.simulateur;
 public class Simulateur {
 
     /**
-     * Taux CEHR pour les célibataires.
-     */
-    private static final double TAUX_CEHR_CELIBATAIRE_0 = 0.0;
-    private static final double TAUX_CEHR_CELIBATAIRE_1 = 0.03;
-    private static final double TAUX_CEHR_CELIBATAIRE_2 = 0.04;
-    private static final double TAUX_CEHR_CELIBATAIRE_3 = 0.04;
-
-    /**
-     * Taux CEHR pour les couples.
-     */
-    private static final double TAUX_CEHR_COUPLE_0 = 0.0;
-    private static final double TAUX_CEHR_COUPLE_1 = 0.0;
-    private static final double TAUX_CEHR_COUPLE_2 = 0.03;
-    private static final double TAUX_CEHR_COUPLE_3 = 0.04;
-
-    /**
-     * Constantes pour l'abattement.
-     */
-    private static final int ABATTEMENT_MAX = 14171;
-    private static final int ABATTEMENT_MIN = 495;
-    private static final double TAUX_ABATTEMENT = 0.1;
-
-    /**
      * Constantes pour le plafonnement et la décote.
      */
     private static final double PLAFOND_DEMI_PART = 1759;
@@ -63,21 +40,6 @@ public class Simulateur {
     private double impotFoyer;
     private double impotAvantDecote;
     private double contributionExceptionnelle;
-
-    /**
-     * Tableau des taux CEHR pour les célibataires.
-     */
-    private final double[] tauxCEHRCelibataire = {
-            TAUX_CEHR_CELIBATAIRE_0, TAUX_CEHR_CELIBATAIRE_1,
-            TAUX_CEHR_CELIBATAIRE_2, TAUX_CEHR_CELIBATAIRE_3
-    };
-
-    /**
-     * Tableau des taux CEHR pour les couples.
-     */
-    private final double[] tauxCEHRCouple = {
-            TAUX_CEHR_COUPLE_0, TAUX_CEHR_COUPLE_1, TAUX_CEHR_COUPLE_2, TAUX_CEHR_COUPLE_3
-    };
 
     /**
      * Constructeur par défaut.
@@ -226,18 +188,7 @@ public class Simulateur {
      * EXG_IMPOT_02
      */
     private void calculerAbattement(SituationFamiliale sitFam) {
-        long abt1 = Math.round(revenuNetDeclarant1 * TAUX_ABATTEMENT);
-        long abt2 = Math.round(revenuNetDeclarant2 * TAUX_ABATTEMENT);
-
-        abt1 = Math.min(Math.max(abt1, ABATTEMENT_MIN), ABATTEMENT_MAX);
-
-        if (sitFam == SituationFamiliale.MARIE || sitFam == SituationFamiliale.PACSE) {
-            abt2 = Math.min(Math.max(abt2, ABATTEMENT_MIN), ABATTEMENT_MAX);
-        } else {
-            abt2 = 0;
-        }
-
-        this.abattement = abt1 + abt2;
+        this.abattement = AbattementCalculator.calculer(revenuNetDeclarant1, revenuNetDeclarant2, sitFam);
     }
 
     /**
@@ -300,26 +251,29 @@ public class Simulateur {
      */
     private void calculerContributionExceptionnelle() {
         this.contributionExceptionnelle = 0;
-        int i = 0;
 
-        do {
-            double[] tauxCEHR = (nombrePartsDeclarants == 1)
-                    ? tauxCEHRCelibataire : tauxCEHRCouple;
+        LimiteCEHR[] limites = LimiteCEHR.values();
+        TauxCEHR[] taux = TauxCEHR.values();
 
-            if (revenuFiscalReference >= LimiteCEHR.values()[i].getLimite()
-                    && revenuFiscalReference < LimiteCEHR.values()[i+1].getLimite()
-            ) {
-                contributionExceptionnelle +=
-                        (revenuFiscalReference - LimiteCEHR.values()[i].getLimite()) * tauxCEHR[i];
-                break;
-            } else {
-                contributionExceptionnelle += (LimiteCEHR.values()[i+1].getLimite() - LimiteCEHR.values()[i].getLimite()) * tauxCEHR[i];
+        for (int i = 0; i < taux.length; i++) {
+            int borneInf = limites[i].getLimite();
+            int borneSup = limites[i + 1].getLimite();
+
+            if (revenuFiscalReference > borneInf) {
+                double montantTranche = Math.min(revenuFiscalReference, borneSup) - borneInf;
+                double tauxApplicable;
+                if (nombrePartsDeclarants == 1) {
+                    tauxApplicable = taux[i].getTauxCelibataire();
+                } else {
+                    tauxApplicable = taux[i].getTauxCouple();
+                }
+                this.contributionExceptionnelle += montantTranche * tauxApplicable;
             }
-            i++;
-        } while (i < tauxCEHRCelibataire.length);
+        }
 
         this.contributionExceptionnelle = Math.round(this.contributionExceptionnelle);
     }
+
 
     /**
      * Calcule l'impôt brut des déclarants.
