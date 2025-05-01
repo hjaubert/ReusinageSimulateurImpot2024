@@ -8,16 +8,6 @@ package com.kerware.simulateur;
 public class Simulateur {
 
     /**
-     * Constantes pour le plafonnement et la décote.
-     */
-    private static final double PLAFOND_DEMI_PART = 1759;
-    private static final double SEUIL_DECOTE_SEUL = 1929;
-    private static final double SEUIL_DECOTE_COUPLE = 3191;
-    private static final double DECOTE_MAX_SEUL = 873;
-    private static final double DECOTE_MAX_COUPLE = 1444;
-    private static final double TAUX_DECOTE = 0.4525;
-
-    /**
      * Constantes pour le calcul des parts fiscales.
      */
     private static final double PART_ENFANT = 0.5;
@@ -153,20 +143,7 @@ public class Simulateur {
      */
     private void calculerNombreParts(SituationFamiliale sitFam) {
         // Calcul des parts pour les déclarants
-        switch (sitFam) {
-            case CELIBATAIRE:
-            case DIVORCE:
-            case VEUF:
-                this.nombrePartsDeclarants = 1;
-                break;
-            case MARIE:
-            case PACSE:
-                this.nombrePartsDeclarants = 2;
-                break;
-            default:
-                this.nombrePartsDeclarants = 0;
-                break;
-        }
+        this.nombrePartsDeclarants = sitFam.getNombrePartsDeclarants();
 
         // Calcul des parts pour les enfants à charge
         this.nombrePartsFoyer = this.nombrePartsDeclarants;
@@ -255,7 +232,7 @@ public class Simulateur {
     private void appliquerPlafonnement() {
         double baisseImpot = impotDeclarants - impotFoyer;
         double ecartParts = nombrePartsFoyer - nombrePartsDeclarants;
-        double plafond = (ecartParts / PART_ENFANT) * PLAFOND_DEMI_PART;
+        double plafond = (ecartParts / PART_ENFANT) * PlafonnementDecote.PLAFOND_DEMI_PART;
 
         if (baisseImpot >= plafond) {
             this.impotFoyer = impotDeclarants - plafond;
@@ -272,12 +249,12 @@ public class Simulateur {
         this.decote = 0;
 
         if (nombrePartsDeclarants == 1) {
-            if (impotFoyer < SEUIL_DECOTE_SEUL) {
-                this.decote = DECOTE_MAX_SEUL - (impotFoyer * TAUX_DECOTE);
+            if (impotFoyer < PlafonnementDecote.SEUIL_DECOTE_SEUL) {
+                this.decote = PlafonnementDecote.DECOTE_MAX_SEUL - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
             }
         } else if (nombrePartsDeclarants == 2) {
-            if (impotFoyer < SEUIL_DECOTE_COUPLE) {
-                this.decote = DECOTE_MAX_COUPLE - (impotFoyer * TAUX_DECOTE);
+            if (impotFoyer < PlafonnementDecote.SEUIL_DECOTE_COUPLE) {
+                this.decote = PlafonnementDecote.DECOTE_MAX_COUPLE - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
             }
         }
 
