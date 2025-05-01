@@ -8,25 +8,6 @@ package com.kerware.simulateur;
 public class Simulateur {
 
     /**
-     * Constantes pour les tranches d'imposition.
-     */
-    private static final int LIMITE_T0 = 0;
-    private static final int LIMITE_T1 = 11294;
-    private static final int LIMITE_T2 = 28797;
-    private static final int LIMITE_T3 = 82341;
-    private static final int LIMITE_T4 = 177106;
-    private static final int LIMITE_T5 = Integer.MAX_VALUE;
-
-    /**
-     * Constantes pour les taux d'imposition.
-     */
-    private static final double TAUX_T0 = 0.0;
-    private static final double TAUX_T1 = 0.11;
-    private static final double TAUX_T2 = 0.3;
-    private static final double TAUX_T3 = 0.41;
-    private static final double TAUX_T4 = 0.45;
-
-    /**
      * Constantes pour la contribution exceptionnelle sur les hauts revenus.
      */
     private static final int LIMITE_CEHR_0 = 0;
@@ -96,14 +77,18 @@ public class Simulateur {
      * Tableau des limites de tranches d'imposition.
      */
     private final int[] limitesTranches = {
-            LIMITE_T0, LIMITE_T1, LIMITE_T2, LIMITE_T3, LIMITE_T4, LIMITE_T5
+            TrancheImposition.LIMITE_T0.getLimite(), TrancheImposition.LIMITE_T1.getLimite(), TrancheImposition.LIMITE_T2.getLimite(), TrancheImposition.LIMITE_T3.getLimite(), TrancheImposition.LIMITE_T4.getLimite(), TrancheImposition.LIMITE_T5.getLimite()
     };
 
     /**
      * Tableau des taux d'imposition par tranche.
      */
     private final double[] tauxTranches = {
-            TAUX_T0, TAUX_T1, TAUX_T2, TAUX_T3, TAUX_T4
+            TrancheImposition.LIMITE_T0.getTaux(),
+            TrancheImposition.LIMITE_T1.getTaux(),
+            TrancheImposition.LIMITE_T2.getTaux(),
+            TrancheImposition.LIMITE_T3.getTaux(),
+            TrancheImposition.LIMITE_T4.getTaux()
     };
 
     /**
@@ -394,20 +379,7 @@ public class Simulateur {
      * Calcule l'impôt pour un revenu donné selon les tranches d'imposition.
      */
     private double calculerImpotParTranches(double revenuImposable) {
-        double impot = 0;
-        int i = 0;
-
-        do {
-            if (revenuImposable >= limitesTranches[i] && revenuImposable < limitesTranches[i + 1]) {
-                impot += (revenuImposable - limitesTranches[i]) * tauxTranches[i];
-                break;
-            } else {
-                impot += (limitesTranches[i + 1] - limitesTranches[i]) * tauxTranches[i];
-            }
-            i++;
-        } while (i < tauxTranches.length);
-
-        return impot;
+        return TrancheImposition.calculerImpot(revenuImposable);
     }
 
     /**
