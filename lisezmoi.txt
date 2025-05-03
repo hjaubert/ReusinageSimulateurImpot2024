@@ -1,0 +1,21 @@
+
+Refactoring d’un code legacy : Calcul de l’impôt sur le revenu
+
+1. Contexte du projet
+Dans le cadre de notre formation en BUT Informatique, nous avons travaillé sur un projet de refactoring de code legacy. Le programme concerné simulait le calcul de l’impôt sur le revenu. L’objectif de ce projet était de comprendre et d’améliorer un code existant tout en appliquant les principes de qualité logicielle tels que la lisibilité, la maintenabilité et la testabilité.
+
+2. Analyse du code legacy
+Le code d’origine présentait plusieurs problèmes majeurs. Tout d’abord, il était peu lisible, notamment à cause de l’utilisation de « nombres magiques » difficiles à interpréter. Ensuite, l’ensemble de la logique était regroupé dans une seule méthode, ce qui rendait le code très fortement couplé et difficile à modifier. Enfin, toute tentative d’ajouter ou de modifier une règle fiscale risquait d’impacter d’autres parties du code, ce qui nuisait à sa robustesse et à son évolutivité.
+
+3. Objectifs du refactoring
+L’objectif principal du refactoring était de découper le code en plusieurs méthodes et classes spécialisées, dans le but de le rendre plus clair et plus facile à maintenir. Il fallait également préparer le code à d’éventuelles évolutions futures, comme l’ajout de nouvelles tranches d’imposition, sans altérer le fonctionnement existant.
+
+4. Modifications apportées
+Plusieurs améliorations ont été mises en œuvre. Tout d’abord, de nouvelles classes ont été créées pour bien séparer les responsabilités. Les tranches d’imposition ont été définies à l’aide de constantes pour éviter les nombres magiques. Enfin, des tests unitaires ont été ajoutés (avec JUnit, ou autre framework utilisé) afin d’assurer la fiabilité du programme et d’atteindre le niveau de couverture de test demandé.
+
+5. Résultats
+Le code refactoré est désormais plus lisible, modulaire et correctement testé. Il est beaucoup plus facile à maintenir et à faire évoluer. Le comportement du programme reste identique à celui du code initial, mais sa structure a été considérablement améliorée sur le plan technique.
+
+6. Difficultés rencontrées
+La principale difficulté rencontrée était de veiller à ne pas altérer le comportement original du programme tout en modifiant sa structure interne.
+
