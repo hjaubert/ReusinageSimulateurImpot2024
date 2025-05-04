@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\AbattementCalculator.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\AdaptateurSimulateur.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\CalculFiscale.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\ConstantesFiscales.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\ICalculateurImpot.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\LimiteCEHR.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\PlafonnementDecote.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\PreconditionsValidator.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\Simulateur.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\SituationFamiliale.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\TauxCEHR.java">
+</file>
+<file name="C:\Users\hjaub\OneDrive\Documents\HUGO\BUT\Semestre 4\R4.02 - Qualité de Développement\SimulateurImpot2024\SimulateurImpot2024\src\main\java\com\kerware\simulateurReusine\TrancheImposition.java">
+</file>
+</checkstyle>

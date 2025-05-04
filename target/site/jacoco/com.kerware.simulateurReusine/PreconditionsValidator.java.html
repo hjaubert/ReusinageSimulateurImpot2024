@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreconditionsValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SimulateurImpot2024</a> &gt; <a href="index.source.html" class="el_package">com.kerware.simulateurReusine</a> &gt; <span class="el_source">PreconditionsValidator.java</span></div><h1>PreconditionsValidator.java</h1><pre class="source lang-java linenums">package com.kerware.simulateurReusine;
+
+<span class="nc" id="L3">public class PreconditionsValidator {</span>
+
+    private static final int NB_MAX_ENFANTS = 7;
+
+    public static void verifierPreconditions(int revNetDecl1, int revNetDecl2,
+                                             SituationFamiliale sitFam,
+                                             int nbEnfants, int nbEnfantsHandicapes,
+                                             boolean parentIsol) {
+<span class="fc bfc" id="L11" title="All 4 branches covered.">        if (revNetDecl1 &lt; 0 || revNetDecl2 &lt; 0) {</span>
+<span class="fc" id="L12">            throw new IllegalArgumentException(</span>
+                    &quot;Le revenu net ne peut pas être négatif&quot;
+            );
+        }
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        if (nbEnfants &lt; 0) {</span>
+<span class="fc" id="L17">            throw new IllegalArgumentException(</span>
+                    &quot;Le nombre d'enfants ne peut pas être négatif&quot;
+            );
+        }
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (nbEnfantsHandicapes &lt; 0) {</span>
+<span class="fc" id="L22">            throw new IllegalArgumentException(</span>
+                    &quot;Le nombre d'enfants handicapés ne peut pas être négatif&quot;
+            );
+        }
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (sitFam == null) {</span>
+<span class="nc" id="L27">            throw new IllegalArgumentException(</span>
+                    &quot;La situation familiale ne peut pas être null&quot;
+            );
+        }
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (nbEnfantsHandicapes &gt; nbEnfants) {</span>
+<span class="fc" id="L32">            throw new IllegalArgumentException(</span>
+                    &quot;Le nombre d'enfants handicapés ne peut pas être supérieur au nombre d'enfants&quot;
+            );
+        }
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (nbEnfants &gt; NB_MAX_ENFANTS) {</span>
+<span class="fc" id="L37">            throw new IllegalArgumentException(</span>
+                    &quot;Le nombre d'enfants ne peut pas être supérieur à &quot; + NB_MAX_ENFANTS
+            );
+        }
+<span class="fc bfc" id="L41" title="All 6 branches covered.">        if (parentIsol &amp;&amp; (sitFam == SituationFamiliale.MARIE</span>
+                            || sitFam == SituationFamiliale.PACSE)) {
+<span class="fc" id="L43">            throw new IllegalArgumentException(</span>
+                    &quot;Un parent isolé ne peut pas être marié ou pacsé&quot;
+            );
+        }
+<span class="fc bfc" id="L47" title="All 6 branches covered.">        boolean estSeul = sitFam == SituationFamiliale.CELIBATAIRE</span>
+                            || sitFam == SituationFamiliale.DIVORCE
+                            || sitFam == SituationFamiliale.VEUF;
+<span class="fc bfc" id="L50" title="All 4 branches covered.">        if (estSeul &amp;&amp; revNetDecl2 &gt; 0) {</span>
+<span class="fc" id="L51">            throw new IllegalArgumentException(</span>
+                    &quot;Un célibataire, un divorcé ou un veuf ne peut pas avoir de revenu déclarant 2&quot;
+            );
+        }
+<span class="fc" id="L55">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

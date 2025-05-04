@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrancheImposition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SimulateurImpot2024</a> &gt; <a href="index.source.html" class="el_package">com.kerware.simulateurReusine</a> &gt; <span class="el_source">TrancheImposition.java</span></div><h1>TrancheImposition.java</h1><pre class="source lang-java linenums">package com.kerware.simulateurReusine;
+
+<span class="fc" id="L3">public enum TrancheImposition {</span>
+<span class="fc" id="L4">    LIMITE_T0(0, 0.0),</span>
+<span class="fc" id="L5">    LIMITE_T1(11294, 0.11),</span>
+<span class="fc" id="L6">    LIMITE_T2(28797, 0.30),</span>
+<span class="fc" id="L7">    LIMITE_T3(82341, 0.41),</span>
+<span class="fc" id="L8">    LIMITE_T4(177106, 0.45),</span>
+<span class="fc" id="L9">    LIMITE_T5(Integer.MAX_VALUE, 0.45);</span>
+
+    private final int limite;
+    private final double taux;
+
+<span class="fc" id="L14">    TrancheImposition(int newLimite, double newTaux) {</span>
+<span class="fc" id="L15">        this.limite = newLimite;</span>
+<span class="fc" id="L16">        this.taux = newTaux;</span>
+<span class="fc" id="L17">    }</span>
+
+    public int getLimite() {
+<span class="fc" id="L20">        return limite;</span>
+    }
+
+    public double getTaux() {
+<span class="fc" id="L24">        return taux;</span>
+    }
+
+    public static double calculerImpot(double revenuImposable) {
+<span class="fc" id="L28">        double impot = 0;</span>
+<span class="fc" id="L29">        int i = 0;</span>
+
+        do {
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">            if (revenuImposable &gt;= values()[i].getLimite()</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">                    &amp;&amp; revenuImposable &lt; values()[i+1].getLimite()) {</span>
+<span class="fc" id="L34">                impot += (revenuImposable - values()[i].getLimite()) * values()[i].getTaux();</span>
+<span class="fc" id="L35">                break;</span>
+            } else {
+<span class="fc" id="L37">                impot += (values()[i+1].getLimite() - values()[i].getLimite())</span>
+<span class="fc" id="L38">                        * values()[i].getTaux();</span>
+            }
+<span class="fc" id="L40">            i++;</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        } while (i &lt; values().length);</span>
+
+
+<span class="fc" id="L44">        return impot;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

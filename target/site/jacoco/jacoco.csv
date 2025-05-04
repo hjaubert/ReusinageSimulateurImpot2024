@@ -1,0 +1,12 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+SimulateurImpot2024,com.kerware.simulateurReusine,ConstantesFiscales,3,0,0,0,1,0,1,0,1,0
+SimulateurImpot2024,com.kerware.simulateurReusine,SituationFamiliale,0,49,0,0,0,10,0,3,0,3
+SimulateurImpot2024,com.kerware.simulateurReusine,AdaptateurSimulateur,29,99,0,2,6,31,6,13,6,12
+SimulateurImpot2024,com.kerware.simulateurReusine,PlafonnementDecote,3,0,0,0,1,0,1,0,1,0
+SimulateurImpot2024,com.kerware.simulateurReusine,TauxCEHR,0,52,0,0,0,11,0,4,0,4
+SimulateurImpot2024,com.kerware.simulateurReusine,CalculFiscale,12,401,3,27,4,87,7,28,4,16
+SimulateurImpot2024,com.kerware.simulateurReusine,TrancheImposition,0,133,2,4,0,24,2,6,0,5
+SimulateurImpot2024,com.kerware.simulateurReusine,AbattementCalculator,3,36,0,4,1,7,1,3,1,1
+SimulateurImpot2024,com.kerware.simulateurReusine,LimiteCEHR,0,49,0,0,0,10,0,3,0,3
+SimulateurImpot2024,com.kerware.simulateurReusine,PreconditionsValidator,8,77,1,29,2,17,2,15,1,1
+SimulateurImpot2024,com.kerware.simulateurReusine,Simulateur,4,56,0,0,2,15,1,3,1,3

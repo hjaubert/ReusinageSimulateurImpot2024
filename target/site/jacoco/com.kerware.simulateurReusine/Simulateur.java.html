@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Simulateur.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SimulateurImpot2024</a> &gt; <a href="index.source.html" class="el_package">com.kerware.simulateurReusine</a> &gt; <span class="el_source">Simulateur.java</span></div><h1>Simulateur.java</h1><pre class="source lang-java linenums">package com.kerware.simulateurReusine;
+
+/**
+ * Simulateur d'impôt sur le revenu en France pour l'année 2024 sur les revenus de l'année 2023.
+ * Cette classe permet de calculer l'impôt pour des contribuables
+ * avec différentes situations familiales.
+ */
+public class Simulateur {
+
+    // Données du calcul
+    private CalculFiscale calculFiscale;
+
+    /**
+     * Constructeur par défaut.
+     */
+<span class="fc" id="L16">    public Simulateur() {</span>
+        // Initialisation des attributs avec des valeurs par défaut
+<span class="fc" id="L18">        calculFiscale = new CalculFiscale();</span>
+<span class="fc" id="L19">    }</span>
+
+    /**
+     * Calcule l'impôt sur le revenu net.
+     *
+     * @param revNetDecl1 Revenu net du premier déclarant
+     * @param revNetDecl2 Revenu net du deuxième déclarant
+     * @param sitFam Situation familiale
+     * @param nbEnfants Nombre d'enfants
+     * @param nbEnfantsHandicapes Nombre d'enfants en situation de handicap
+     * @param parentIsol Si le parent est isolé
+     * @return Montant de l'impôt sur le revenu net
+     * @throws IllegalArgumentException Si les paramètres sont invalides
+     */
+    public int calculImpot(int revNetDecl1, int revNetDecl2, SituationFamiliale sitFam,
+                           int nbEnfants, int nbEnfantsHandicapes, boolean parentIsol) {
+
+        // Vérification des préconditions
+<span class="fc" id="L37">        PreconditionsValidator.verifierPreconditions(revNetDecl1, revNetDecl2, sitFam,</span>
+                nbEnfants, nbEnfantsHandicapes, parentIsol);
+
+        // Initialisation des données
+<span class="fc" id="L41">        calculFiscale.initialiserDonnees(revNetDecl1, revNetDecl2, nbEnfants,</span>
+                                        nbEnfantsHandicapes, parentIsol);
+
+        // Calcul de l'abattement
+<span class="fc" id="L45">        calculFiscale.calculerAbattement(sitFam);</span>
+
+        // Calcul du revenu fiscal de référence
+<span class="fc" id="L48">        calculFiscale.calculerRevenuFiscalReference();</span>
+
+        // Calcul du nombre de parts
+<span class="fc" id="L51">        calculFiscale.calculerNombreParts(sitFam);</span>
+
+        // Calcul de la contribution exceptionnelle
+<span class="fc" id="L54">        calculFiscale.calculerContributionExceptionnelle();</span>
+
+        // Calcul de l'impôt des déclarants
+<span class="fc" id="L57">        calculFiscale.calculerImpotDeclarants();</span>
+
+        // Calcul de l'impôt du foyer fiscal
+<span class="fc" id="L60">        calculFiscale.calculerImpotFoyer();</span>
+
+        // Vérification du plafonnement
+<span class="fc" id="L63">        calculFiscale.appliquerPlafonnement();</span>
+
+        // Calcul de la décote
+<span class="fc" id="L66">        calculFiscale.calculerDecote();</span>
+
+        // Calcul de l'impôt final
+<span class="fc" id="L69">        return calculFiscale.calculerImpotFinal();</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public CalculFiscale getCalculFiscale() {
+<span class="fc" id="L77">        return calculFiscale;</span>
+    }
+
+    /**
+     *
+     * @param newCalculFiscale
+     */
+    public void setCalculFiscale(CalculFiscale newCalculFiscale) {
+<span class="nc" id="L85">        this.calculFiscale = newCalculFiscale;</span>
+<span class="nc" id="L86">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

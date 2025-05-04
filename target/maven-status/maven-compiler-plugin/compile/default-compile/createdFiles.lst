@@ -1,0 +1,17 @@
+com\kerware\simulateurReusine\ConstantesFiscales.class
+com\kerware\simulateurReusine\AdaptateurSimulateur.class
+com\kerware\simulateurReusine\CalculFiscale.class
+com\kerware\simulateurReusine\TauxCEHR.class
+com\kerware\simulateurReusine\Simulateur.class
+com\kerware\simulateur\Simulateur.class
+com\kerware\simulateurReusine\TrancheImposition.class
+com\kerware\simulateur\Simulateur$1.class
+com\kerware\simulateur\AdaptateurSimulateur.class
+com\kerware\simulateur\ICalculateurImpot.class
+com\kerware\simulateurReusine\PreconditionsValidator.class
+com\kerware\simulateurReusine\ICalculateurImpot.class
+com\kerware\simulateurReusine\LimiteCEHR.class
+com\kerware\simulateurReusine\AbattementCalculator.class
+com\kerware\simulateur\SituationFamiliale.class
+com\kerware\simulateurReusine\SituationFamiliale.class
+com\kerware\simulateurReusine\PlafonnementDecote.class

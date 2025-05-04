@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CalculFiscale.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SimulateurImpot2024</a> &gt; <a href="index.source.html" class="el_package">com.kerware.simulateurReusine</a> &gt; <span class="el_source">CalculFiscale.java</span></div><h1>CalculFiscale.java</h1><pre class="source lang-java linenums">package com.kerware.simulateurReusine;
+
+public class CalculFiscale {
+
+    private int revenuNetDeclarant1;
+    private int revenuNetDeclarant2;
+    private int nombreEnfants;
+    private int nombreEnfantsHandicap;
+    private boolean parentIsole;
+    private double revenuFiscalReference;
+    private double abattement;
+    private double nombrePartsDeclarants;
+    private double nombrePartsFoyer;
+    private double decote;
+    private double impotDeclarants;
+    private double impotFoyer;
+    private double impotAvantDecote;
+    private double contributionExceptionnelle;
+
+<span class="fc" id="L20">    public CalculFiscale() {</span>
+<span class="fc" id="L21">        reinitialiser();</span>
+<span class="fc" id="L22">    }</span>
+
+    /**
+     *
+     * @return le revenu fiscale de référence
+     */
+    public double getRevenuFiscalReference() {
+<span class="nc" id="L29">        return revenuFiscalReference;</span>
+    }
+
+    /**
+     *
+     * @return l'abattement
+     */
+    public double getAbattement() {
+<span class="fc" id="L37">        return abattement;</span>
+    }
+
+    /**
+     *
+     * @return le nombre de parts du foyer
+     */
+    public double getNombrePartsFoyer() {
+<span class="fc" id="L45">        return nombrePartsFoyer;</span>
+    }
+
+    /**
+     *
+     * @return la decote
+     */
+    public double getDecote() {
+<span class="nc" id="L53">        return decote;</span>
+    }
+
+    /**
+     *
+     * @return l'impot avant la decote
+     */
+    public double getImpotAvantDecote() {
+<span class="nc" id="L61">        return impotAvantDecote;</span>
+    }
+
+    /**
+     *
+     * @return la valeur de la contribution exceptionnelle
+     */
+    public double getContributionExceptionnelle() {
+<span class="nc" id="L69">        return contributionExceptionnelle;</span>
+    }
+
+    /**
+     * Reinitialise toutes les variables
+     */
+    private void reinitialiser() {
+<span class="fc" id="L76">        this.revenuNetDeclarant1 = 0;</span>
+<span class="fc" id="L77">        this.revenuNetDeclarant2 = 0;</span>
+<span class="fc" id="L78">        this.nombreEnfants = 0;</span>
+<span class="fc" id="L79">        this.nombreEnfantsHandicap = 0;</span>
+<span class="fc" id="L80">        this.parentIsole = false;</span>
+<span class="fc" id="L81">        this.revenuFiscalReference = 0;</span>
+<span class="fc" id="L82">        this.abattement = 0;</span>
+<span class="fc" id="L83">        this.nombrePartsDeclarants = 0;</span>
+<span class="fc" id="L84">        this.nombrePartsFoyer = 0;</span>
+<span class="fc" id="L85">        this.decote = 0;</span>
+<span class="fc" id="L86">        this.impotDeclarants = 0;</span>
+<span class="fc" id="L87">        this.impotFoyer = 0;</span>
+<span class="fc" id="L88">        this.impotAvantDecote = 0;</span>
+<span class="fc" id="L89">        this.contributionExceptionnelle = 0;</span>
+<span class="fc" id="L90">    }</span>
+
+    /**
+     *
+     * @param revNetDecl1
+     * @param revNetDecl2
+     * @param nbEnfants
+     * @param nbEnfantsHandicapes
+     * @param parentIsol
+     */
+    public void initialiserDonnees(int revNetDecl1, int revNetDecl2, int nbEnfants,
+                                    int nbEnfantsHandicapes, boolean parentIsol) {
+<span class="fc" id="L102">        this.revenuNetDeclarant1 = revNetDecl1;</span>
+<span class="fc" id="L103">        this.revenuNetDeclarant2 = revNetDecl2;</span>
+<span class="fc" id="L104">        this.nombreEnfants = nbEnfants;</span>
+<span class="fc" id="L105">        this.nombreEnfantsHandicap = nbEnfantsHandicapes;</span>
+<span class="fc" id="L106">        this.parentIsole = parentIsol;</span>
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * Calcule l'abattement à appliquer.
+     * EXG_IMPOT_02
+     */
+    public void calculerAbattement(SituationFamiliale sitFam) {
+<span class="fc" id="L114">        this.abattement = AbattementCalculator.calculer(</span>
+                revenuNetDeclarant1, revenuNetDeclarant2, sitFam
+        );
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Calcule le revenu fiscal de référence.
+     */
+    public void calculerRevenuFiscalReference() {
+<span class="fc" id="L123">        this.revenuFiscalReference = revenuNetDeclarant1 + revenuNetDeclarant2 - abattement;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (this.revenuFiscalReference &lt; 0) {</span>
+<span class="fc" id="L125">            this.revenuFiscalReference = 0;</span>
+        }
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Calcule le nombre de parts du foyer fiscal.
+     * EXG_IMPOT_03
+     */
+    public void calculerNombreParts(SituationFamiliale sitFam) {
+        // Calcul des parts pour les déclarants
+<span class="fc" id="L135">        this.nombrePartsDeclarants = sitFam.getNombrePartsDeclarants();</span>
+
+        // Calcul des parts pour les enfants à charge
+<span class="fc" id="L138">        this.nombrePartsFoyer = this.nombrePartsDeclarants;</span>
+
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (nombreEnfants &lt;= ConstantesFiscales.NB_ENFANTS_DEMI_PART ) {</span>
+<span class="fc" id="L141">            this.nombrePartsFoyer += nombreEnfants * ConstantesFiscales.PART_ENFANT;</span>
+        } else {
+<span class="fc" id="L143">            this.nombrePartsFoyer += 1.0 + (</span>
+                    nombreEnfants - ConstantesFiscales.NB_ENFANTS_DEMI_PART
+            );
+        }
+
+        // Ajout pour parent isolé
+<span class="pc bpc" id="L149" title="1 of 4 branches missed.">        if (parentIsole &amp;&amp; nombreEnfants &gt; 0) {</span>
+<span class="fc" id="L150">            this.nombrePartsFoyer += ConstantesFiscales.PART_PARENT_ISOLE;</span>
+        }
+
+        // Cas spécial pour veuf avec enfant
+<span class="pc bpc" id="L154" title="1 of 4 branches missed.">        if (sitFam == SituationFamiliale.VEUF &amp;&amp; nombreEnfants &gt; 0) {</span>
+<span class="fc" id="L155">            this.nombrePartsFoyer += 1;</span>
+        }
+
+        // Ajout pour enfants en situation de handicap
+<span class="fc" id="L159">        this.nombrePartsFoyer += nombreEnfantsHandicap * ConstantesFiscales.PART_ENFANT;</span>
+<span class="fc" id="L160">    }</span>
+
+    /**
+     * Calcule la contribution exceptionnelle sur les hauts revenus.
+     * EXG_IMPOT_07
+     */
+    public void calculerContributionExceptionnelle() {
+<span class="fc" id="L167">        this.contributionExceptionnelle = 0;</span>
+
+<span class="fc" id="L169">        LimiteCEHR[] limites = LimiteCEHR.values();</span>
+<span class="fc" id="L170">        TauxCEHR[] taux = TauxCEHR.values();</span>
+
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        for (int i = 0; i &lt; taux.length; i++) {</span>
+<span class="fc" id="L173">            int borneInf = limites[i].getLimite();</span>
+<span class="fc" id="L174">            int borneSup = limites[i + 1].getLimite();</span>
+
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            if (revenuFiscalReference &gt; borneInf) {</span>
+<span class="fc" id="L177">                double montantTranche = Math.min(revenuFiscalReference, borneSup) - borneInf;</span>
+                double tauxApplicable;
+<span class="fc bfc" id="L179" title="All 2 branches covered.">                if (nombrePartsDeclarants == 1) {</span>
+<span class="fc" id="L180">                    tauxApplicable = taux[i].getTauxCelibataire();</span>
+                } else {
+<span class="fc" id="L182">                    tauxApplicable = taux[i].getTauxCouple();</span>
+                }
+<span class="fc" id="L184">                this.contributionExceptionnelle += montantTranche * tauxApplicable;</span>
+            }
+        }
+
+<span class="fc" id="L188">        this.contributionExceptionnelle = Math.round(this.contributionExceptionnelle);</span>
+<span class="fc" id="L189">    }</span>
+
+
+    /**
+     * Calcule l'impôt brut des déclarants.
+     * EXG_IMPOT_04
+     */
+    public void calculerImpotDeclarants() {
+<span class="fc" id="L197">        double revenuImposable = revenuFiscalReference / nombrePartsDeclarants;</span>
+<span class="fc" id="L198">        this.impotDeclarants = calculerImpotParTranches(revenuImposable) * nombrePartsDeclarants;</span>
+<span class="fc" id="L199">        this.impotDeclarants = Math.round(this.impotDeclarants);</span>
+<span class="fc" id="L200">    }</span>
+
+    /**
+     * Calcule l'impôt brut du foyer fiscal.
+     * EXG_IMPOT_04
+     */
+    public void calculerImpotFoyer() {
+<span class="fc" id="L207">        double revenuImposable = revenuFiscalReference / nombrePartsFoyer;</span>
+<span class="fc" id="L208">        this.impotFoyer = calculerImpotParTranches(revenuImposable) * nombrePartsFoyer;</span>
+<span class="fc" id="L209">        this.impotFoyer = Math.round(this.impotFoyer);</span>
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Calcule l'impôt pour un revenu donné selon les tranches d'imposition.
+     */
+    public double calculerImpotParTranches(double revenuImposable) {
+<span class="fc" id="L216">        return TrancheImposition.calculerImpot(revenuImposable);</span>
+    }
+
+    /**
+     * Applique le plafonnement des effets du quotient familial.
+     * EXG_IMPOT_05
+     */
+    public void appliquerPlafonnement() {
+<span class="fc" id="L224">        double baisseImpot = impotDeclarants - impotFoyer;</span>
+<span class="fc" id="L225">        double ecartParts = nombrePartsFoyer - nombrePartsDeclarants;</span>
+<span class="fc" id="L226">        double plafond = (ecartParts / ConstantesFiscales.PART_ENFANT)</span>
+                * PlafonnementDecote.PLAFOND_DEMI_PART;
+
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        if (baisseImpot &gt;= plafond) {</span>
+<span class="fc" id="L230">            this.impotFoyer = impotDeclarants - plafond;</span>
+        }
+
+<span class="fc" id="L233">        this.impotAvantDecote = this.impotFoyer;</span>
+<span class="fc" id="L234">    }</span>
+
+    /**
+     * Calcule la décote.
+     * EXG_IMPOT_06
+     */
+    public void calculerDecote() {
+<span class="fc" id="L241">        this.decote = 0;</span>
+
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (nombrePartsDeclarants == 1) {</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">            if (impotFoyer &lt; PlafonnementDecote.SEUIL_DECOTE_SEUL) {</span>
+<span class="fc" id="L245">                this.decote = PlafonnementDecote.DECOTE_MAX_SEUL</span>
+                        - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
+            }
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        } else if (nombrePartsDeclarants == 2) {</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">            if (impotFoyer &lt; PlafonnementDecote.SEUIL_DECOTE_COUPLE) {</span>
+<span class="fc" id="L250">                this.decote = PlafonnementDecote.DECOTE_MAX_COUPLE</span>
+                        - (impotFoyer * PlafonnementDecote.TAUX_DECOTE);
+            }
+        }
+
+<span class="fc" id="L255">        this.decote = Math.round(this.decote);</span>
+
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        if (impotFoyer &lt;= this.decote) {</span>
+<span class="fc" id="L258">            this.decote = impotFoyer;</span>
+        }
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Calcule l'impôt final.
+     */
+    public int calculerImpotFinal() {
+<span class="fc" id="L266">        double impotFinal = impotFoyer - decote + contributionExceptionnelle;</span>
+<span class="fc" id="L267">        return (int) Math.round(impotFinal);</span>
+    }
+
+    /**
+     * Retourne l'impôt net final.
+     *
+     * @return Impôt net final
+     */
+    public double getImpotNet() {
+<span class="fc" id="L276">        return impotFoyer - decote + contributionExceptionnelle;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
