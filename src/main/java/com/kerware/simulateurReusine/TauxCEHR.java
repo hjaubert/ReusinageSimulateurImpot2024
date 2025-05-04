@@ -1,4 +1,4 @@
-package com.kerware.simulateur;
+package com.kerware.simulateurReusine;
 
 public enum TauxCEHR {
     TAUX_0(0.0, 0.0),

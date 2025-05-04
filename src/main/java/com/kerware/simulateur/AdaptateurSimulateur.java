@@ -1,74 +1,16 @@
 package com.kerware.simulateur;
 
-/**
- * Adaptateur pour la classe SimulateurRefactorise implémentant l'interface ICalculateurImpot.
- * Cette classe fait le pont entre l'ancien code et le nouveau système.
- *
- * @author [Votre Nom]
- * @version 1.0
- */
-public final class AdaptateurSimulateur implements ICalculateurImpot {
+public class AdaptateurSimulateur implements ICalculateurImpot {
 
-    /**
-     * Instance du simulateur refactorisé.
-     */
-    private final Simulateur simulateur;
+    private Simulateur simulateur = new Simulateur();
 
-    /**
-     * Revenu net du premier déclarant.
-     */
-    private int revenusNetDecl1;
-
-    /**
-     * Revenu net du deuxième déclarant.
-     */
-    private int revenusNetDecl2;
-
-    /**
-     * Situation familiale du contribuable.
-     */
+    private int revenusNetDecl1 = 0;
+    private int revenusNetDecl2 = 0;
     private SituationFamiliale situationFamiliale;
-
-    /**
-     * Nombre d'enfants à charge.
-     */
     private int nbEnfantsACharge;
-
-    /**
-     * Nombre d'enfants en situation de handicap.
-     */
     private int nbEnfantsSituationHandicap;
-
-    /**
-     * Indique si le contribuable est un parent isolé.
-     */
     private boolean parentIsole;
 
-    /**
-     * Résultat du calcul d'impôt.
-     */
-    private int impotCalcule;
-
-    /**
-     * Constructeur par défaut.
-     */
-    public AdaptateurSimulateur() {
-        this.simulateur = new Simulateur();
-        reinitialiser();
-    }
-
-    /**
-     * Réinitialise les attributs de l'adaptateur.
-     */
-    private void reinitialiser() {
-        this.revenusNetDecl1 = 0;
-        this.revenusNetDecl2 = 0;
-        this.situationFamiliale = null;
-        this.nbEnfantsACharge = 0;
-        this.nbEnfantsSituationHandicap = 0;
-        this.parentIsole = false;
-        this.impotCalcule = 0;
-    }
 
     @Override
     public void setRevenusNetDeclarant1(int rn) {
@@ -102,18 +44,7 @@ public final class AdaptateurSimulateur implements ICalculateurImpot {
 
     @Override
     public void calculImpotSurRevenuNet() {
-        if (this.situationFamiliale == null) {
-            throw new IllegalArgumentException("La situation familiale doit être définie");
-        }
-
-        this.impotCalcule = simulateur.calculImpot(
-                revenusNetDecl1,
-                revenusNetDecl2,
-                situationFamiliale,
-                nbEnfantsACharge,
-                nbEnfantsSituationHandicap,
-                parentIsole
-        );
+         simulateur.calculImpot(revenusNetDecl1, revenusNetDecl2 ,situationFamiliale, nbEnfantsACharge, nbEnfantsSituationHandicap, parentIsole);
     }
 
     @Override
@@ -128,36 +59,36 @@ public final class AdaptateurSimulateur implements ICalculateurImpot {
 
     @Override
     public double getContribExceptionnelle() {
-        return simulateur.getCalculFiscale().getContributionExceptionnelle();
+        return simulateur.getContribExceptionnelle();
     }
 
     @Override
     public int getRevenuFiscalReference() {
-        return (int) simulateur.getCalculFiscale().getRevenuFiscalReference();
+        return (int)simulateur.getRevenuReference();
     }
 
     @Override
     public int getAbattement() {
-        return (int) simulateur.getCalculFiscale().getAbattement();
+        return (int)simulateur.getAbattement();
     }
 
     @Override
     public double getNbPartsFoyerFiscal() {
-        return simulateur.getCalculFiscale().getNombrePartsFoyer();
+        return simulateur.getNbParts();
     }
 
     @Override
     public int getImpotAvantDecote() {
-        return (int) simulateur.getCalculFiscale().getImpotAvantDecote();
+        return (int)simulateur.getImpotAvantDecote();
     }
 
     @Override
     public int getDecote() {
-        return (int) simulateur.getCalculFiscale().getDecote();
+        return (int)simulateur.getDecote();
     }
 
     @Override
     public int getImpotSurRevenuNet() {
-        return (int) simulateur.getCalculFiscale().getImpotNet();
+        return (int)simulateur.getImpotNet();
     }
 }

@@ -1,4 +1,4 @@
-package com.kerware.simulateur;
+package com.kerware.simulateurReusine;
 
 public enum TrancheImposition {
     LIMITE_T0(0, 0.0),

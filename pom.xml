@@ -98,6 +98,12 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.10</version>
+                <configuration>
+                    <!-- Exclut le package com.kerware.simulateur des tests de couverture -->
+                    <excludes>
+                        <exclude>com/kerware/simulateur/**/*.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -116,11 +122,11 @@
                                 <rule>
                                     <element>BUNDLE</element> <!-- Vérifie toute l'application -->
                                     <limits>
-                                        <!-- Définit un seuil de couverture des lignes à 80% -->
+                                        <!-- Définit un seuil de couverture des lignes à 90% -->
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.92</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -159,6 +165,11 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.10</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/kerware/simulateur/**/*.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -180,6 +191,9 @@
                     <!-- Choix de la configuration Checkstyle -->
                     <configLocation>src/test/resources/iut-caen-checks.xml</configLocation> <!-- ou sun_checks.xml -->
                     <failsOnError>true</failsOnError>
+                    <!-- Ne prends en compte que le package com.kerware.simulateurReusine pour les tests statiques -->
+                    <includes>com/kerware/simulateurReusine/**/*.java</includes>
+                    <excludes>com/kerware/simulateur/**/*.java</excludes>
                 </configuration>
             </plugin>
         </plugins>
